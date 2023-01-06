@@ -3,6 +3,19 @@
 	export let data;
 	let userInput = ""; // what the users types in the textbox
 	let showIrrelevantLines = false;
+
+	export async function is_valid_expression(ahb_expression){
+		if (!ahb_expression){
+			// if the expression is empty, we treat it as valid
+			return true;
+		}
+		if(/\d/g.test(ahb_expression)==false){
+			//if the expression doesn't contain any number, no need to call ahbicht
+			return true;
+		}
+		let result = await fetch(`https://ahbicht.azurewebsites.net/api/ParseExpression?check_validity=true&expression=${encodeURIComponent(ahb_expression)}`);
+		return result.status==200;
+	}
 </script>
 
 <svelte:head>
@@ -39,6 +52,8 @@
 				<col span="1" id="data_element">
 				<col span="1" id="value_pool_entry">
 				<col span="1" id="name">
+				<col span="1" id="ahb_expression">
+				<col span="1" id="is_valid_expression">
 			</colgroup>
 			<tr>
 				<th>Abschnitt</th>
@@ -48,6 +63,7 @@
 				<th>Auswahl</th>
 				<th>Bedeutung</th>
 				<th>Expression</th>
+				<th><!-- is valid (ahbicht) --></th>
 				<th><!--perma link-->⚓</th>
 			</tr>
 
@@ -61,6 +77,14 @@
 			<td>{ahb_line.value_pool_entry??''}</td>
 			<td>{ahb_line.name ??''}</td>
 			<td>{ahb_line.ahb_expression??''}</td>
+			<td>
+				{#await is_valid_expression(ahb_line.ahb_expression)}
+				{:then is_valid}
+					{#if !is_valid}
+					<span title="ungültige Bedigung">⚠</span>
+					{/if}
+				{/await}
+			</td>
 			<td><!-- {ahb_line.guid} --></td>
 		</tr>
 		{/if}

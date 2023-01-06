@@ -43,12 +43,17 @@ col#value_pool_entry{
 	max-width:15%;
 }
 col#name{
-	width:50%;
-	max-width:50%;
+	width:30%;
+	max-width:30%;
 }
 col#ahb_expression{
-	width:10%;
-	max-width:10%;
+	width:30%;
+	max-width:30%;
+}
+col#is_valid_expression{
+	width:5em;
+	max-width:5em;
+	color:red;
 }
 td.irrelevant{
 	background-color: var(--color-bg-1,1.5);
