@@ -1,12 +1,8 @@
 import { sveltekit } from '@sveltejs/kit/vite';
-import json from '@rollup/plugin-json'
 import type { UserConfig } from 'vite';
 
 const config: UserConfig = {
-	plugins: [sveltekit(),
-		json({
-		compact: true
-	})],
+	plugins: [sveltekit()],
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}']
 	},

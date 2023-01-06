@@ -1,9 +1,8 @@
 <script>
-	import Counter from './Counter.svelte';
-	import welcome from '$lib/images/svelte-welcome.webp';
-	import welcome_fallback from '$lib/images/svelte-welcome.png';
-	import data from '$lib/../machine-readable_anwendungshandbuecher/FV2210/UTILMD/flatahb/11042.json'
-
+	/** @type {import('./$types').PageData} */
+	export let data;
+	let userInput = ""; // what the users types in the textbox
+	let selectedPruefidentifikator = ""; // if the user entered a 5 digit pruefi, it will be set here
 </script>
 
 <svelte:head>
@@ -12,22 +11,55 @@
 </svelte:head>
 
 <section>
-	<h1>
-		<span class="welcome">
-			<picture>
-				<source srcset={welcome} type="image/webp" />
-				<img src={welcome_fallback} alt="Welcome" />
-			</picture>
-		</span>
+	<h1>AHBesser</h1>
+	<h2>Anwendungshandbücher für Menschen</h2>
+</section>
+<section> <!-- input section -->
+		<input bind:value={userInput} placeholder="Prüfidentifikator" list="matchingPruefis">
+	<datalist id="matchingPruefis">
+		{#each Array.from(data.availablePruefis) as pruefidentifikator}
+		{#if userInput.trim()!=="" && pruefidentifikator.startsWith(userInput.trim())}
+		<option value="{pruefidentifikator}">{pruefidentifikator}</option>
+		{/if}
+		{/each}
+	</datalist>
+</section>
+<section>
+	{#if /\d{5}/g.test(userInput.trim())}
+	{#if data.availablePruefis.has(userInput.trim())}
+		<h3>Anwendungshandbuch {userInput.trim()}</h3>
+		<table>
+			<tr>
+				<th>Abschnitt</th>
+				<th>Segment Gruppe</th>
+				<th>Segment</th>
+				<th>Datenelement</th>
+				<th>Auswahl</th>
+				<th>Bedeutung</th>
+				<th>Expression</th>
+				<th><!--perma link-->⚓</th>
+			</tr>
 
-		to your new<br />SvelteKit app
-	</h1>
+		{#each data.ahbs.get(userInput.trim())["lines"] as ahb_line }
+		<tr>
+			<td>{ahb_line.section_name??''}</td>
+			<td>{ahb_line.segment_group_key??''}</td>
+			<td>{ahb_line.segment_code??''}</td>
+			<td>{ahb_line.data_element??''}</td>
+			<td>{ahb_line.value_pool_entry??''}</td>
+			<td>{ahb_line.name ??''}</td>
+			<td>{ahb_line.ahb_expression??''}</td>
+			<td><!-- {ahb_line.guid} --></td>
+		</tr>
+		{/each}
+	</table>
+	{:else}
+	<p>Unbekanner Prüfidentifikator {userInput}</p>
+	{/if}
+	{:else}
+	<p>'{userInput}' is kein Prüfidentifikator</p>
+	{/if}
 
-	<h2>
-		try editing <strong>src/routes/+page.svelte</strong>
-	</h2>
-
-	<Counter />
 </section>
 
 <style>
