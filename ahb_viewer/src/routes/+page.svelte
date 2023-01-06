@@ -5,8 +5,8 @@
 </script>
 
 <svelte:head>
-	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
+	<title>AHBesser</title>
+	<meta name="description" content="Lesbare Anwendungshandbücher" />
 </svelte:head>
 
 <section>
