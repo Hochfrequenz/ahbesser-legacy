@@ -27,15 +27,13 @@ async function loadSingleAhb(flatAhbPath: string): Promise<FlatAhb> {
 }
 async function loadAllAhbs(): Promise<Array<FlatAhb>> {
 	let ahbPromises = new Array<Promise<FlatAhb>>();
-	let allAhbPathes = await import.meta.glob(`$lib/machine-readable_anwendungshandbuecher/FV2210/**/flatahb/*.json`);
-	console.log("loadAllAhbs");
+	let allAhbPathes = await import.meta.glob(`./_machine-readable_anwendungshandbuecher/FV2210/**/flatahb/*.json`);
 	for (let ahbPath in allAhbPathes) {
 		
 		ahbPromises.push(loadSingleAhb(ahbPath));
 	}
 	let allAhbs = new Array<FlatAhb>();
 	allAhbs = await Promise.all(ahbPromises);
-	console.log(allAhbs);
 	return allAhbs;
 }
 import type { PageServerLoad } from './$types';
@@ -55,6 +53,5 @@ export const load = (async ({ params }) => {
 		availablePruefis: availablePruefis,
 		ahbs: ahbMap
 	};
-	console.log(result);
 	return result;
 }) satisfies PageServerLoad;

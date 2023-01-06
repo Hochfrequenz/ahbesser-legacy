@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-
 	export async function _is_valid_expression(ahb_expression) {
 		if (!ahb_expression) {
 			// if the expression is empty, we treat it as valid
