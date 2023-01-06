@@ -2,7 +2,7 @@
 	/** @type {import('./$types').PageData} */
 	export let data;
 	let userInput = ""; // what the users types in the textbox
-	let selectedPruefidentifikator = ""; // if the user entered a 5 digit pruefi, it will be set here
+	let showIrrelevantLines = false;
 </script>
 
 <svelte:head>
@@ -15,6 +15,7 @@
 	<h2>Anwendungshandbücher für Menschen</h2>
 </section>
 <section> <!-- input section -->
+	<p>
 		<input bind:value={userInput} placeholder="Prüfidentifikator" list="matchingPruefis">
 	<datalist id="matchingPruefis">
 		{#each Array.from(data.availablePruefis) as pruefidentifikator}
@@ -23,17 +24,27 @@
 		{/if}
 		{/each}
 	</datalist>
+	</p>
+	<p><span title="Irrelevant sind diejenigen Zeilen, die nur in 'benachbarten' Prüfidentifkatoren verwendet werden">Irrelevante</span> Zeilen anzeigen? <input type=checkbox bind:checked={showIrrelevantLines}></p>
 </section>
 <section>
 	{#if /\d{5}/g.test(userInput.trim())}
 	{#if data.availablePruefis.has(userInput.trim())}
 		<h3>Anwendungshandbuch {userInput.trim()}</h3>
-		<table>
+		<table class="ahb">
+			<colgroup>
+				<col span="1" id="section_name">
+				<col span="1" id="segment_group_key">
+				<col span="1" id="segment_code">
+				<col span="1" id="data_element">
+				<col span="1" id="value_pool_entry">
+				<col span="1" id="name">
+			</colgroup>
 			<tr>
 				<th>Abschnitt</th>
-				<th>Segment Gruppe</th>
-				<th>Segment</th>
-				<th>Datenelement</th>
+				<th><!-- Segment Gruppe--></th>
+				<th><!-- Segment--></th>
+				<th><!-- Datenelement--></th>
 				<th>Auswahl</th>
 				<th>Bedeutung</th>
 				<th>Expression</th>
@@ -41,7 +52,8 @@
 			</tr>
 
 		{#each data.ahbs.get(userInput.trim())["lines"] as ahb_line }
-		<tr>
+		{#if showIrrelevantLines || ahb_line.ahb_expression}
+		<tr class={showIrrelevantLines?"irrelevant":"default"}>
 			<td>{ahb_line.section_name??''}</td>
 			<td>{ahb_line.segment_group_key??''}</td>
 			<td>{ahb_line.segment_code??''}</td>
@@ -51,12 +63,13 @@
 			<td>{ahb_line.ahb_expression??''}</td>
 			<td><!-- {ahb_line.guid} --></td>
 		</tr>
+		{/if}
 		{/each}
 	</table>
 	{:else}
 	<p>Unbekanner Prüfidentifikator {userInput}</p>
 	{/if}
-	{:else}
+	{:else if userInput.length>0}
 	<p>'{userInput}' is kein Prüfidentifikator</p>
 	{/if}
 

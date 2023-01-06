@@ -43,7 +43,6 @@ export async function load({ params }) {
         availablePruefis.add(flatAhb.meta.pruefidentifikator);
         ahbMap.set(flatAhb.meta.pruefidentifikator, flatAhb);
     }
-    
     return {
         metadatas: allMetaData,
         availablePruefis: availablePruefis,

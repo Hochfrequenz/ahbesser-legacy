@@ -1,9 +1,3 @@
-<script>
-	import { page } from '$app/stores';
-	import logo from '$lib/images/svelte-logo.svg';
-	import github from '$lib/images/github.svg';
-</script>
-
 <header>
 </header>
 
@@ -35,7 +29,7 @@
 	nav {
 		display: flex;
 		justify-content: center;
-		--background: rgba(255, 255, 255, 0.7);
+		--background: rgba(243, 241, 246);
 	}
 
 	svg {
