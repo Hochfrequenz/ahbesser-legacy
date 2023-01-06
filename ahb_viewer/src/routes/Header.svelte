@@ -1,5 +1,4 @@
-<header>
-</header>
+<header />
 
 <style>
 	header {
