@@ -2,7 +2,7 @@
 @import '@fontsource/fira-mono';
 
 :root {
-	--font-body: "Yanone Kaffeesatz", 'Open Sans', 'Helvetica Neue', sans-serif;
+	--font-body: 'Yanone Kaffeesatz', 'Open Sans', 'Helvetica Neue', sans-serif;
 	--font-mono: 'Fira Mono', monospace;
 	--font-size: 'large';
 	--color-bg-1: rgba(243, 241, 246);
@@ -23,40 +23,42 @@ body {
 	background-size: 100vw 100vh;
 }
 
-table.ahb{
-	width:100%;
+table.ahb {
+	width: 100%;
 }
-col#section_name{
-	width:15%;
+col#section_name {
+	width: 15%;
 	max-width: 15%;
 }
-col#segment_group_key,col#segment_code,col#data_element{
-	width:20rm;
-	max-width:20rm;
-	text-align:left;
+col#segment_group_key,
+col#segment_code,
+col#data_element {
+	width: 20rm;
+	max-width: 20rm;
+	text-align: left;
 }
-col#data_element{
-	margin-right:5em;
+col#data_element {
+	margin-right: 5em;
 }
-col#value_pool_entry{
-	width:15%;
-	max-width:15%;
+col#value_pool_entry {
+	width: 15%;
+	max-width: 15%;
 }
-col#name{
-	width:30%;
-	max-width:30%;
+col#name {
+	width: 30%;
+	max-width: 30%;
 }
-col#ahb_expression{
-	width:30%;
-	max-width:30%;
+col#ahb_expression {
+	width: 30%;
+	max-width: 30%;
 }
-col#is_valid_expression{
-	width:5em;
-	max-width:5em;
-	color:red;
+col#is_valid_expression {
+	width: 5em;
+	max-width: 5em;
+	color: red;
 }
-td.irrelevant{
-	background-color: var(--color-bg-1,1.5);
+td.irrelevant {
+	background-color: var(--color-bg-1, 1.5);
 }
 h1,
 h2,
