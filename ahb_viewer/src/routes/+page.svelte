@@ -2,6 +2,8 @@
 	import Counter from './Counter.svelte';
 	import welcome from '$lib/images/svelte-welcome.webp';
 	import welcome_fallback from '$lib/images/svelte-welcome.png';
+	import data from '$lib/../machine-readable_anwendungshandbuecher/FV2210/UTILMD/flatahb/11042.json'
+
 </script>
 
 <svelte:head>
