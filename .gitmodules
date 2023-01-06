@@ -1,0 +1,3 @@
+[submodule "ahb_viewer/src/lib/machine-readable_anwendungshandbuecher"]
+	path = ahb_viewer/src/lib/machine-readable_anwendungshandbuecher
+	url = https://github.com/Hochfrequenz/machine-readable_anwendungshandbuecher

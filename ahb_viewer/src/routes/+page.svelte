@@ -1,21 +1,20 @@
 <script>
-	/** @type {import('./$types').PageData} */
+	export async function _is_valid_expression(ahb_expression){
+	if (!ahb_expression){
+		// if the expression is empty, we treat it as valid
+		return true;
+	}
+	if(/\d/g.test(ahb_expression)==false){
+		//if the expression doesn't contain any number, no need to call ahbicht
+		return true;
+	}
+	let result = await fetch(`https://ahbicht.azurewebsites.net/api/ParseExpression?check_validity=true&expression=${encodeURIComponent(ahb_expression)}`);
+	return result.status==200;
+	}
+	/** @type {import('./$types').PageServerData} */
 	export let data;
 	let userInput = ""; // what the users types in the textbox
 	let showIrrelevantLines = false;
-
-	export async function is_valid_expression(ahb_expression){
-		if (!ahb_expression){
-			// if the expression is empty, we treat it as valid
-			return true;
-		}
-		if(/\d/g.test(ahb_expression)==false){
-			//if the expression doesn't contain any number, no need to call ahbicht
-			return true;
-		}
-		let result = await fetch(`https://ahbicht.azurewebsites.net/api/ParseExpression?check_validity=true&expression=${encodeURIComponent(ahb_expression)}`);
-		return result.status==200;
-	}
 </script>
 
 <svelte:head>
@@ -23,7 +22,7 @@
 	<meta name="description" content="Lesbare Anwendungshandbücher" />
 </svelte:head>
 
-<section>
+<section >
 	<h1>AHBesser</h1>
 	<h2>Anwendungshandbücher für Menschen</h2>
 </section>
@@ -78,7 +77,7 @@
 			<td>{ahb_line.name ??''}</td>
 			<td>{ahb_line.ahb_expression??''}</td>
 			<td>
-				{#await is_valid_expression(ahb_line.ahb_expression)}
+				{#await _is_valid_expression(ahb_line.ahb_expression)}
 				{:then is_valid}
 					{#if !is_valid}
 					<span title="ungültige Bedigung">⚠</span>
@@ -110,21 +109,5 @@
 
 	h1 {
 		width: 100%;
-	}
-
-	.welcome {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
-	}
-
-	.welcome img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		display: block;
 	}
 </style>

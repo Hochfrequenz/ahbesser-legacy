@@ -1,8 +1,6 @@
-export const prerender = false; // dynamic data! do not pre-render
-const allAhbPathes = import.meta.glob(
-	'/src/machine-readable_anwendungshandbuecher/FV2210/**/flatahb/*.json'
-);
+import { onMount } from "svelte";
 
+export const prerender = false; // dynamic data! do not pre-render
 export interface FlatAhbLine {
 	guid: string;
 	name: string | null;
@@ -26,19 +24,26 @@ async function loadSingleAhb(flatAhbPath: string): Promise<FlatAhb> {
 	const flatAhbContent: FlatAhb = await import(flatAhbPath);
 	return flatAhbContent;
 }
-
-/** @type {import('./$types').PageServerLoad} */
-export async function load({ params }) {
+async function loadAllAhbs():Promise<Array<FlatAhb>>{
+	let allAhbPathes = import.meta.glob(
+		'$lib/machine-readable_anwendungshandbuecher/FV2210/**/flatahb/*.json'
+	);
 	let ahbPromises = new Array<Promise<FlatAhb>>();
 	for (let ahbPath in allAhbPathes) {
 		ahbPromises.push(loadSingleAhb(ahbPath));
 	}
 	let allAhbs = new Array<FlatAhb>();
 	allAhbs = await Promise.all(ahbPromises);
+	return allAhbs;
+}
+
+
+/** @type {import('./$types').PageServerLoad} */
+export async function load({ params }) {
 	let allMetaData = new Array<AhbMetaInformation>();
 	let availablePruefis = new Set<string>();
 	let ahbMap = new Map<string, FlatAhb>();
-	for (let flatAhb of allAhbs) {
+	for (let flatAhb of await loadAllAhbs()) {
 		allMetaData.push(flatAhb.meta);
 		availablePruefis.add(flatAhb.meta.pruefidentifikator);
 		ahbMap.set(flatAhb.meta.pruefidentifikator, flatAhb);
@@ -49,3 +54,5 @@ export async function load({ params }) {
 		ahbs: ahbMap
 	};
 }
+
+
