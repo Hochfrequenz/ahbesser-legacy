@@ -41,7 +41,7 @@
 	<p><span title="Irrelevant sind diejenigen Zeilen, die nur in 'benachbarten' Prüfidentifkatoren verwendet werden">Irrelevante</span> Zeilen anzeigen? <input type=checkbox bind:checked={showIrrelevantLines}></p>
 </section>
 <section>
-	{#if /\d{5}/g.test(userInput.trim())}
+	{#if /^\d{5}$/g.test(userInput.trim())}
 	{#if data.availablePruefis.has(userInput.trim())}
 		<h3>Anwendungshandbuch {userInput.trim()}</h3>
 		<table class="ahb">
