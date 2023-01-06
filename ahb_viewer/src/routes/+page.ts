@@ -2,7 +2,7 @@
 // it so that it gets served as a static asset in production
 export const prerender = true;
 const allAhbPathes = import.meta.glob(
-	'$lib/../static/machine-readable_anwendungshandbuecher/FV2210/**/flatahb/*.json'
+	'/src/machine-readable_anwendungshandbuecher/FV2210/**/flatahb/*.json'
 );
 
 export interface FlatAhbLine {
