@@ -33,7 +33,8 @@ jobs:
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
           app_location: "./ahb_viewer" # App source code path
           api_location: "build/server" # Api source code path - optional
-          # output_location: "build/static" # Built app content directory - optional
+          output_location: "build/static" # Built app content directory - optional
+
 
 
           ###### End of Repository/Build Configurations ######
