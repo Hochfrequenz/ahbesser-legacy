@@ -1,4 +1,5 @@
 export const prerender = false; // dynamic data! do not pre-render
+import {readFile} from 'fs/promises';
 export interface FlatAhbLine {
 	guid: string;
 	name: string | null;
@@ -19,17 +20,19 @@ export interface AhbMetaInformation {
 }
 
 async function loadSingleAhb(flatAhbPath: string): Promise<FlatAhb> {
-	const flatAhbContent: FlatAhb = await import(flatAhbPath);
+	const rawData = await fetch(flatAhbPath.replace("/src/lib/machine-readable_anwendungshandbuecher/","http://127.0.0.1:5173/_ahbs/"));
+	const json = await rawData.json();
+	var flatAhb = JSON.parse(json);
 	return {
-		meta:flatAhbContent.meta,
-		lines:flatAhbContent.lines
+		meta:flatAhb.meta,
+		lines:flatAhb.lines,
 	} satisfies FlatAhb;
 }
 async function loadAllAhbs(): Promise<Array<FlatAhb>> {
 	let ahbPromises = new Array<Promise<FlatAhb>>();
-	let allAhbPathes = await import.meta.glob(`./_machine-readable_anwendungshandbuecher/FV2210/**/flatahb/*.json`);
+	let allAhbPathes = await import.meta.glob(`$lib/machine-readable_anwendungshandbuecher/FV2210/**/flatahb/*.json`);
+	console.log("allpathes", allAhbPathes);
 	for (let ahbPath in allAhbPathes) {
-		
 		ahbPromises.push(loadSingleAhb(ahbPath));
 	}
 	let allAhbs = new Array<FlatAhb>();
