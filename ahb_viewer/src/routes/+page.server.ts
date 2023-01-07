@@ -1,5 +1,5 @@
 export const prerender = false; // dynamic data! do not pre-render
-import {readFile} from 'fs/promises';
+import { readFile } from 'fs/promises';
 export interface FlatAhbLine {
 	guid: string;
 	name: string | null;
@@ -21,13 +21,16 @@ export interface AhbMetaInformation {
 
 async function loadAllAhbs(): Promise<Array<FlatAhb>> {
 	let allAhbs = new Array<FlatAhb>();
-	let allAhbPathes = await import.meta.glob(`$lib/machine-readable_anwendungshandbuecher/FV2210/**/flatahb/*.json`, {eager:true});
+	let allAhbPathes = await import.meta.glob(
+		`$lib/machine-readable_anwendungshandbuecher/FV2210/**/flatahb/*.json`,
+		{ eager: true }
+	);
 	for (let ahbPath in allAhbPathes) {
 		let eagerAhb = allAhbPathes[ahbPath];
-		let flatAhb ={
-			meta:eagerAhb.meta,
-			lines:eagerAhb.lines,
-		}
+		let flatAhb = {
+			meta: eagerAhb.meta,
+			lines: eagerAhb.lines
+		};
 		allAhbs.push(flatAhb);
 	}
 	return allAhbs;
