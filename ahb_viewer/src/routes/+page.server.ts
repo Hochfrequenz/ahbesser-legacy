@@ -1,8 +1,5 @@
 export const prerender = false; // dynamic data! do not pre-render
-const allAhbPathes = import.meta.glob(
-	'/src/machine-readable_anwendungshandbuecher/FV2210/**/flatahb/*.json'
-);
-
+import { readFile } from 'fs/promises';
 export interface FlatAhbLine {
 	guid: string;
 	name: string | null;
@@ -22,30 +19,38 @@ export interface AhbMetaInformation {
 	pruefidentifikator: string;
 }
 
-async function loadSingleAhb(flatAhbPath: string): Promise<FlatAhb> {
-	const flatAhbContent: FlatAhb = await import(flatAhbPath);
-	return flatAhbContent;
-}
-
-/** @type {import('./$types').PageServerLoad} */
-export async function load({ params }) {
-	let ahbPromises = new Array<Promise<FlatAhb>>();
-	for (let ahbPath in allAhbPathes) {
-		ahbPromises.push(loadSingleAhb(ahbPath));
-	}
+async function loadAllAhbs(): Promise<Array<FlatAhb>> {
 	let allAhbs = new Array<FlatAhb>();
-	allAhbs = await Promise.all(ahbPromises);
+	let allAhbPathes = await import.meta.glob(
+		`$lib/machine-readable_anwendungshandbuecher/FV2210/**/flatahb/*.json`,
+		{ eager: true }
+	);
+	for (let ahbPath in allAhbPathes) {
+		let eagerAhb = allAhbPathes[ahbPath];
+		let flatAhb = {
+			meta: eagerAhb.meta,
+			lines: eagerAhb.lines
+		};
+		allAhbs.push(flatAhb);
+	}
+	return allAhbs;
+}
+import type { PageServerLoad } from './$types';
+
+export const load = (async ({ params }) => {
 	let allMetaData = new Array<AhbMetaInformation>();
 	let availablePruefis = new Set<string>();
 	let ahbMap = new Map<string, FlatAhb>();
+	let allAhbs = await loadAllAhbs();
 	for (let flatAhb of allAhbs) {
 		allMetaData.push(flatAhb.meta);
 		availablePruefis.add(flatAhb.meta.pruefidentifikator);
 		ahbMap.set(flatAhb.meta.pruefidentifikator, flatAhb);
 	}
-	return {
+	const result = {
 		metadatas: allMetaData,
 		availablePruefis: availablePruefis,
 		ahbs: ahbMap
 	};
-}
+	return result;
+}) satisfies PageServerLoad;

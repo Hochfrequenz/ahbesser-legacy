@@ -11,7 +11,10 @@
 	</main>
 
 	<footer>
-		<p>made with ♥ by <a href="https://www.hochfrequenz.de/">Hochfrequenz</a> 2023 | powered by <a href="https://github.com/Hochfrequenz/kohlrahbi/">kohlrahbi</a></p>
+		<p>
+			made with ♥ by <a href="https://www.hochfrequenz.de/">Hochfrequenz</a> 2023 | powered by
+			<a href="https://github.com/Hochfrequenz/kohlrahbi/">kohlrahbi</a>
+		</p>
 	</footer>
 </div>
 

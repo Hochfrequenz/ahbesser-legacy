@@ -36,6 +36,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@fontsource/yanone-kaffeesatz": "^4.5.12"
+		"@fontsource/yanone-kaffeesatz": "^4.5.12",
+		"require-glob": "^4.1.0"
 	}
 }
