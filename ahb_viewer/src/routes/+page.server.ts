@@ -37,7 +37,7 @@ async function loadAllAhbs(): Promise<Array<FlatAhb>> {
 }
 import type { PageServerLoad } from './$types';
 
-export const load = (async ({ params }) => {
+export const load = (async ({ _params }) => {
 	let allMetaData = new Array<AhbMetaInformation>();
 	let availablePruefis = new Set<string>();
 	let ahbMap = new Map<string, FlatAhb>();
