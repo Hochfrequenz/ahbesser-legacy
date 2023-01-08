@@ -35,8 +35,6 @@ jobs:
           api_location: "./ahb_viewer/build/server" # Api source code path - optional
           output_location: "build/static" # Built app content directory - optional
 
-
-
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:
