@@ -21,7 +21,7 @@ export interface AhbMetaInformation {
 
 async function loadAllAhbs(): Promise<Array<FlatAhb>> {
 	let allAhbs = new Array<FlatAhb>();
-	let allAhbPathes = await import.meta.glob(
+	let allAhbPathes = import.meta.glob(
 		`$lib/machine-readable_anwendungshandbuecher/FV2210/**/flatahb/*.json`,
 		{ eager: true }
 	);
