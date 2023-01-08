@@ -1,5 +1,4 @@
 export const prerender = false; // dynamic data! do not pre-render
-import { readFile } from 'fs/promises';
 export interface FlatAhbLine {
 	guid: string;
 	name: string | null;
@@ -18,15 +17,22 @@ export interface FlatAhb {
 export interface AhbMetaInformation {
 	pruefidentifikator: string;
 }
+interface EagerAhb {
+	meta: AhbMetaInformation;
+	lines: Array<FlatAhbLine>;
+}
+
+// see https://vitejs.dev/guide/features.html#glob-import
+let ahbFileNameToRawAhb: Record<string, EagerAhb> = import.meta.glob(
+	`$lib/machine-readable_anwendungshandbuecher/FV2210/**/flatahb/*.json`,
+	{ eager: true }
+); // the keys are the pathes to the ahb from the submodule, the value is a callable that returns its content
 
 async function loadAllAhbs(): Promise<Array<FlatAhb>> {
 	let allAhbs = new Array<FlatAhb>();
-	let allAhbPathes = import.meta.glob(
-		`$lib/machine-readable_anwendungshandbuecher/FV2210/**/flatahb/*.json`,
-		{ eager: true }
-	);
-	for (let ahbPath in allAhbPathes) {
-		let eagerAhb = allAhbPathes[ahbPath];
+
+	for (let ahbPath in ahbFileNameToRawAhb) {
+		let eagerAhb = ahbFileNameToRawAhb[ahbPath];
 		let flatAhb = {
 			meta: eagerAhb.meta,
 			lines: eagerAhb.lines
@@ -37,7 +43,8 @@ async function loadAllAhbs(): Promise<Array<FlatAhb>> {
 }
 import type { PageServerLoad } from './$types';
 
-export const load = (async ({ _params }) => {
+export const load = (async ({}) => {
+	// no params for now
 	let allMetaData = new Array<AhbMetaInformation>();
 	let availablePruefis = new Set<string>();
 	let ahbMap = new Map<string, FlatAhb>();
