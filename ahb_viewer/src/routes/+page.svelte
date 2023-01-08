@@ -25,6 +25,7 @@
 		// a wrapper around data.ahbs.get if you're sure that the pruefi is present in the dict.
 		// it assumes that the return value of data.ahbs.get is _not_ undefined.
 		// if we directly access data.ahbs.get(...) in the template, we'd get an "Object is possibly 'undefined" error in tslint.
+		// related: https://github.com/sveltejs/language-tools/issues/1026
 		return data.ahbs.get(pruefidentifikator)!;
 	}
 
