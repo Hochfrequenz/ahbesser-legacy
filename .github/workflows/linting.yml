@@ -1,5 +1,8 @@
 name: Linting
-on: [push, pull_request]
+on:
+  pull_request: {}
+  push:
+    branches: main
 jobs:
   run-linters:
     name: Run Linters
