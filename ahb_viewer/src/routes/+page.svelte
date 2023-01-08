@@ -1,5 +1,5 @@
 <script lang="ts">
-	export async function _is_valid_expression(ahb_expression) {
+	export async function _is_valid_expression(ahb_expression:string|null):Promise<boolean> {
 		if (!ahb_expression) {
 			// if the expression is empty, we treat it as valid
 			return true;
