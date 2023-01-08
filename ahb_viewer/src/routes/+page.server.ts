@@ -1,5 +1,4 @@
 export const prerender = false; // dynamic data! do not pre-render
-import { readFile } from 'fs/promises';
 export interface FlatAhbLine {
 	guid: string;
 	name: string | null;
@@ -18,16 +17,22 @@ export interface FlatAhb {
 export interface AhbMetaInformation {
 	pruefidentifikator: string;
 }
+interface EagerAhb {
+	meta: AhbMetaInformation;
+	lines: Array<FlatAhbLine>;
+}
+
+// see https://vitejs.dev/guide/features.html#glob-import
+const ahbFileNameToRawAhb: Record<string, EagerAhb> = import.meta.glob(
+	`$lib/machine-readable_anwendungshandbuecher/FV2210/**/flatahb/*.json`,
+	{ eager: true }
+); // the keys are the pathes to the ahb from the submodule, the value is a callable that returns its content
 
 async function loadAllAhbs(): Promise<Array<FlatAhb>> {
-	let allAhbs = new Array<FlatAhb>();
-	let allAhbPathes = await import.meta.glob(
-		`$lib/machine-readable_anwendungshandbuecher/FV2210/**/flatahb/*.json`,
-		{ eager: true }
-	);
-	for (let ahbPath in allAhbPathes) {
-		let eagerAhb = allAhbPathes[ahbPath];
-		let flatAhb = {
+	const allAhbs = new Array<FlatAhb>();
+	for (const ahbPath in ahbFileNameToRawAhb) {
+		const eagerAhb = ahbFileNameToRawAhb[ahbPath];
+		const flatAhb = {
 			meta: eagerAhb.meta,
 			lines: eagerAhb.lines
 		};
@@ -37,12 +42,13 @@ async function loadAllAhbs(): Promise<Array<FlatAhb>> {
 }
 import type { PageServerLoad } from './$types';
 
-export const load = (async ({ params }) => {
-	let allMetaData = new Array<AhbMetaInformation>();
-	let availablePruefis = new Set<string>();
-	let ahbMap = new Map<string, FlatAhb>();
-	let allAhbs = await loadAllAhbs();
-	for (let flatAhb of allAhbs) {
+export const load = (async () => {
+	// no {params} for now, because we don't need them
+	const allMetaData = new Array<AhbMetaInformation>();
+	const availablePruefis = new Set<string>();
+	const ahbMap = new Map<string, FlatAhb>();
+	const allAhbs = await loadAllAhbs();
+	for (const flatAhb of allAhbs) {
 		allMetaData.push(flatAhb.meta);
 		availablePruefis.add(flatAhb.meta.pruefidentifikator);
 		ahbMap.set(flatAhb.meta.pruefidentifikator, flatAhb);

@@ -1,5 +1,5 @@
 <script lang="ts">
-	export async function _is_valid_expression(ahb_expression) {
+	export async function _is_valid_expression(ahb_expression: string | null): Promise<boolean> {
 		if (!ahb_expression) {
 			// if the expression is empty, we treat it as valid
 			return true;
@@ -15,9 +15,19 @@
 		);
 		return result.status == 200;
 	}
+
 	import type { PageServerData } from './$types';
+	import type { FlatAhb } from './+page.server';
 
 	export let data: PageServerData;
+
+	export function get_ahb(pruefidentifikator: string): FlatAhb {
+		// a wrapper around data.ahbs.get if you're sure that the pruefi is present in the dict.
+		// it assumes that the return value of data.ahbs.get is _not_ undefined.
+		// if we directly access data.ahbs.get(...) in the template, we'd get an "Object is possibly 'undefined" error in tslint.
+		// related: https://github.com/sveltejs/language-tools/issues/1026
+		return data.ahbs.get(pruefidentifikator)!;
+	}
 
 	let userInput = ''; // what the users types in the textbox
 	let showIrrelevantLines = false;
@@ -54,7 +64,7 @@
 </section>
 <section>
 	{#if /^\d{5}$/g.test(userInput.trim())}
-		{#if data.availablePruefis.has(userInput.trim())}
+		{#if data.availablePruefis.has(userInput.trim()) && data.ahbs.has(userInput.trim())}
 			<h3>Anwendungshandbuch {userInput.trim()}</h3>
 			<table class="ahb">
 				<colgroup>
@@ -78,8 +88,7 @@
 					<th><!-- is valid (ahbicht) --></th>
 					<th><!--perma link-->⚓</th>
 				</tr>
-
-				{#each data.ahbs.get(userInput.trim()).lines as ahb_line}
+				{#each get_ahb(userInput.trim()).lines as ahb_line}
 					{#if showIrrelevantLines || ahb_line.ahb_expression}
 						<tr class={showIrrelevantLines ? 'irrelevant' : 'default'}>
 							<td>{ahb_line.section_name ?? ''}</td>
