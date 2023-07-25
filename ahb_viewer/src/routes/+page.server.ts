@@ -24,7 +24,7 @@ interface EagerAhb {
 
 // see https://vitejs.dev/guide/features.html#glob-import
 const ahbFileNameToRawAhb: Record<string, EagerAhb> = import.meta.glob(
-	`$lib/machine-readable_anwendungshandbuecher/FV2210/**/flatahb/*.json`,
+	`$lib/machine-readable_anwendungshandbuecher/FV2310/**/flatahb/*.json`,
 	{ eager: true }
 ); // the keys are the pathes to the ahb from the submodule, the value is a callable that returns its content
 
