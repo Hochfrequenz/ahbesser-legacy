@@ -40,7 +40,7 @@ async function loadAllAhbs(): Promise<Array<FlatAhb>> {
 	}
 	return allAhbs;
 }
-import type { PageServerLoad } from './$types';
+import type { PageServerLoad } from '../$types';
 
 export const load = (async () => {
 	// no {params} for now, because we don't need them
