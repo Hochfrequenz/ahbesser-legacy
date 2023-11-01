@@ -1,41 +1,47 @@
-import createAuth0Client from '@auth0/auth0-spa-js';
+import createAuth0Client, { Auth0Client } from '@auth0/auth0-spa-js';
 import { writable } from 'svelte/store';
+import type { User } from '@auth0/auth0-spa-js';
 
-const user = writable(null);
-const isAuthenticated = writable(false);
-const auth0Client = writable(null);
+interface AuthState {
+    loading: boolean;
+    isAuthenticated: boolean;
+    user: User | null;
+}
 
-async function initAuth0() {
-    const auth0 = await createAuth0Client({
-        domain: process.env.AUTH0_DOMAIN,
-        client_id: process.env.AUTH0_CLIENT_ID,
-        redirect_uri: window.location.origin
+function createAuth() {
+    const client = writable<Auth0Client>();
+    const { subscribe, set } = writable<AuthState>({
+        loading: true,
+        isAuthenticated: false,
+        user: null,
     });
 
-    auth0Client.set(auth0);
+    async function initialize() {
+        const auth0Client = await createAuth0Client({
+            domain: process.env.AUTH0_DOMAIN,
+            client_id: process.env.AUTH0_CLIENT_ID,
+            redirect_uri: window.location.origin,
+        });
 
-    if (window.location.search.includes('code=') && window.location.search.includes('state=')) {
-        await auth0.handleRedirectCallback();
-        window.history.replaceState({}, document.title, "/");
+        client.set(auth0Client);
+
+        if (window.location.search.includes('code=') && window.location.search.includes('state=')) {
+            await auth0Client.handleRedirectCallback();
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
+        const isAuthenticated = await auth0Client.isAuthenticated();
+        const user = isAuthenticated ? await auth0Client.getUser() : null;
+
+        set({ loading: false, isAuthenticated, user });
     }
 
-    const isAuthenticatedValue = await auth0.isAuthenticated();
-    isAuthenticated.set(isAuthenticatedValue);
-
-    if (isAuthenticatedValue) {
-        const userValue = await auth0.getUser();
-        user.set(userValue);
-    }
+    return {
+        initialize,
+        subscribe,
+        login: async () => (await client).loginWithRedirect(),
+        logout: async () => (await client).logout({ returnTo: window.location.origin }),
+    };
 }
 
-async function login() {
-    const client = get(auth0Client);
-    client.loginWithRedirect();
-}
-
-async function logout() {
-    const client = get(auth0Client);
-    client.logout({ returnTo: window.location.origin });
-}
-
-export { user, isAuthenticated, initAuth0, login, logout };
+export const auth = createAuth();
