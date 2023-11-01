@@ -39,7 +39,7 @@
 </svelte:head>
 
 <section>
-	<h1>AHBesser</h1>
+	<h1 class="text-3xl font-bold underline">AHBesser</h1>
 	<h2>Anwendungshandbücher für Menschen</h2>
 </section>
 <section>
@@ -118,7 +118,10 @@
 	{/if}
 </section>
 
-<style>
+<style lang="postcss">
+	:global(html) {
+		background-color: theme(colors.gray.100);
+	}
 	section {
 		display: flex;
 		flex-direction: column;
