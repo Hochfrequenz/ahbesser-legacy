@@ -39,6 +39,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@auth0/auth0-spa-js": "^2.1.2",
 		"@fontsource/yanone-kaffeesatz": "^4.5.12",
 		"require-glob": "^4.1.0"
 	}
