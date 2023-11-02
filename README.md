@@ -7,3 +7,10 @@ The app is deployed as Static Web App.
 Its resource group is `kohlrahbi`.
 Its name is [`ahbesser`](https://portal.azure.com/#@hochfrequenz.net/resource/subscriptions/1cdc65f0-62d2-4770-be11-9ec1da950c81/resourcegroups/kohlrahbi/providers/Microsoft.Web/staticSites/ahbesser/staticsite).
 The main branch is automatically deployed to [`purple-glacier-0bd2a2403.2.azurestaticapps.net/`](https://purple-glacier-0bd2a2403.2.azurestaticapps.net/).
+
+
+## Known Issues
+
+### Getting 403 when trying to access the app
+
+If you want to run the app locally and get the 403 from Auth0, you need to add your local URL to the allowed URLs in the Auth0 dashboard.
