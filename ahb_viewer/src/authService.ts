@@ -4,8 +4,8 @@ import { user, isAuthenticated, popupOpen } from "./store";
 
 
 async function createClient() {
-    const auth0Domain = process.env.AUTH0_DOMAIN;
-    const auth0ClientId = process.env.AUTH0_CLIENT_ID;
+    const auth0Domain = import.meta.env.VITE_AUTH0_DOMAIN;
+    const auth0ClientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
 
     if (!auth0Domain) {
         throw new Error('AUTH0_DOMAIN is not defined in the environment variables.');
