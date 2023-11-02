@@ -1,9 +1,8 @@
-<script>
-	//import { auth } from '../..../authService the login function from your auth service
-	import { onMount } from 'svelte';
-	import auth from '../authService';
-	import { isAuthenticated, user } from '../store';
+<script lang="ts">
 	import type { Auth0Client } from '@auth0/auth0-spa-js';
+	import { isAuthenticated, user } from '../store';
+	import auth from '../authService';
+	import { onMount } from 'svelte';
 
 	let auth0Client: Auth0Client;
 
@@ -22,11 +21,12 @@
 	});
 
 	function login() {
-		auth.loginWithPopup(auth0Client, {});
+		const popUpLoginOptions = {};
+		auth.loginWithPopup(auth0Client, popUpLoginOptions);
 	}
 
 	function logout() {
-		auth.logout(auth0Client, {});
+		auth.logout(auth0Client);
 	}
 </script>
 
@@ -57,7 +57,7 @@
 
 	<!-- Call to Action -->
 	<section class="text-center my-10">
-		<button class="px-5 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" on:click={auth}
+		<button class="px-5 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" on:click={login}
 			>Login</button
 		>
 	</section>
