@@ -3,6 +3,7 @@
 	import { isAuthenticated, user } from '../store';
 	import auth from '../authService';
 	import { onMount } from 'svelte';
+	import '../app.css';
 
 	let auth0Client: Auth0Client;
 
@@ -12,6 +13,7 @@
 		const userData = await auth0Client.getUser();
 		if (userData) {
 			user.set(userData);
+			isAuthenticated.set(true);
 		} else {
 			// Handle the case when userData is undefined
 			// For example, you could set user to null or an empty object,
@@ -38,18 +40,25 @@
 
 	<!-- Hero Section -->
 	<section class="text-center my-10">
-		<h2 class="text-2xl font-semibold">Welcome to Our Website</h2>
-		<p class="mt-4 text-lg">Brief introduction about what your website does.</p>
+		<h2 class="text-2xl font-semibold">AHBesser</h2>
+		<p class="mt-4 text-lg">Anwendungshandbücher für Menschen.</p>
 	</section>
 
 	<!-- Features or Services -->
 	<section class="my-10">
-		<h3 class="text-xl font-semibold text-center">Our Features</h3>
+		<h3 class="text-xl font-semibold text-center">Features</h3>
 		<div class="flex justify-around mt-5">
 			<!-- Feature Blocks -->
 			<div class="text-center">
-				<h4 class="font-semibold">Feature 1</h4>
-				<p>Short description.</p>
+				<h4 class="font-semibold">Nur ein Prüfidentifikator</h4>
+				<p>
+					Man kann sich ganz auf den Inhalt konzentrieren ohne Angst zu haben in der falschen
+					Tabelle sein.
+				</p>
+				<h4 class="font-semibold">Sektionsweiser Aufbau</h4>
+				<p>Übersichtlicher Aufbau der Tabellen ermöglicht eine schnelle Orientierung.</p>
+				<p>The value is: {$user?.email}</p>
+				<p>Authenticated is: {$isAuthenticated}</p>
 			</div>
 			<!-- Repeat for other features -->
 		</div>
@@ -57,15 +66,21 @@
 
 	<!-- Call to Action -->
 	<section class="text-center my-10">
-		<button class="px-5 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" on:click={login}
+		<button class="px-5 py-2 bg-primary text-white rounded hover:bg-secondary" on:click={login}
 			>Login</button
+		>
+		<button class="px-5 py-2 bg-primary text-white rounded hover:bg-secondary" on:click={logout}
+			>Logout</button
 		>
 	</section>
 
 	<!-- Footer -->
-	<footer class="py-5 text-center">© Your Website Name</footer>
+	<footer class="py-5 text-center">
+		made with ♥ by <a class="text-accent" href="https://hochfrequenz.de">Hochfrequenz</a> 2023 |
+		powered by
+		<a class="text-accent" href="https://github.com/Hochfrequenz/kohlrahbi/">kohlrahbi</a>
+	</footer>
 </div>
 
 <style>
-	/* Add additional custom styles if needed */
 </style>
