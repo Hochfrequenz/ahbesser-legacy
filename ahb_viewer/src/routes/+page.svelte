@@ -29,6 +29,7 @@
 
 	function logout() {
 		auth.logout(auth0Client);
+		isAuthenticated.set(false);
 	}
 </script>
 
