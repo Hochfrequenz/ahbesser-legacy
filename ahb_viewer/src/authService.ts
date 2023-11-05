@@ -37,7 +37,12 @@ async function loginWithPopup(client: Auth0Client, options: PopupLoginOptions) {
 }
 
 function logout(client: Auth0Client) {
-    return client.logout();
+    client.logout({
+        logoutParams: {
+            returnTo: 'http://localhost:5174/'
+        }
+    });
+    return
 }
 
 const auth = {
