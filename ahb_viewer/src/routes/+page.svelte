@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Auth0Client } from '@auth0/auth0-spa-js';
 	import { isAuthenticated, user } from '../store';
+	import Navbar from '../lib/Navbar.svelte';
 	import auth from '../authService';
 	import { onMount } from 'svelte';
 	import '../app.css';
@@ -32,6 +33,8 @@
 		isAuthenticated.set(false);
 	}
 </script>
+
+<Navbar />;
 
 <div class="container mx-auto">
 	<!-- Header -->
@@ -65,15 +68,22 @@
 		</div>
 	</section>
 
-	<!-- Call to Action -->
-	<section class="text-center my-10">
-		<button class="px-5 py-2 bg-primary text-white rounded hover:bg-secondary" on:click={login}
-			>Login</button
-		>
-		<button class="px-5 py-2 bg-primary text-white rounded hover:bg-secondary" on:click={logout}
-			>Logout</button
-		>
-	</section>
+	{#if !$isAuthenticated}
+		<!-- Call to Action -->
+		<section class="text-center my-10">
+			<button class="px-5 py-2 bg-primary text-white rounded hover:bg-secondary" on:click={login}
+				>Login</button
+			>
+			<button class="px-5 py-2 bg-primary text-white rounded hover:bg-secondary" on:click={logout}
+				>Logout</button
+			>
+		</section>
+	{/if}
+	{#if $isAuthenticated}
+		<section class="text-center my-10">
+			<input type="text" placeholder="You are logged in!" />
+		</section>
+	{/if}
 
 	<!-- Footer -->
 	<footer class="py-5 text-center">
