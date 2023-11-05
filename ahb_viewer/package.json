@@ -2,7 +2,7 @@
 	"name": "ahb-viewer",
 	"version": "0.0.1",
 	"scripts": {
-		"dev": "vite dev",
+		"dev": "vite dev --port 5174",
 		"build": "vite build",
 		"preview": "vite preview",
 		"test": "playwright test",
@@ -42,7 +42,9 @@
 	"type": "module",
 	"dependencies": {
 		"@auth0/auth0-spa-js": "^2.1.2",
+		"@fontsource/roboto-condensed": "^5.0.13",
 		"@fontsource/yanone-kaffeesatz": "^4.5.12",
-		"require-glob": "^4.1.0"
+		"require-glob": "^4.1.0",
+		"svelte-routing": "^2.6.0"
 	}
 }
