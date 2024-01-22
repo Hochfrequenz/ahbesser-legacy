@@ -19,9 +19,10 @@ jobs:
         with:
           submodules: true # necessary for the data
           ref: ${{ github.event.workflow_run.head_branch }}
-          token: ${{ secrets.SUBMODULE_ACCESS_TOKEN }}
-          # expires 2024-01-01, https://github.com/Hochfrequenz/ahbesser/settings/secrets/actions/SUBMODULE_ACCESS_TOKEN
+          token: ${{ secrets.SUBMODULE_ACCESS_TOKEN }} # expires 2024-12-01
           # scope: read:repo
+          # Regenerate token: https://github.com/settings/tokens/1065933443
+          # Update secret with regenerated token https://github.com/Hochfrequenz/ahbesser/settings/secrets/actions/SUBMODULE_ACCESS_TOKEN
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
