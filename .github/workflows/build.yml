@@ -16,7 +16,9 @@ jobs:
         with:
           submodules: true # necessary for the data
           ref: ${{ github.event.workflow_run.head_branch }}
-          token: ${{ secrets.SUBMODULE_ACCESS_TOKEN }}
+          token: ${{ secrets.SUBMODULE_ACCESS_TOKEN }} # expires 2024-12-01
+          # Regenerate token: https://github.com/settings/tokens/1065933443
+          # Update secret with regenerated token https://github.com/Hochfrequenz/ahbesser/settings/secrets/actions/SUBMODULE_ACCESS_TOKEN
           lfs: true
       - name: Set up Node.js
         uses: actions/setup-node@v4
