@@ -35,7 +35,7 @@ paths:
           description: Formatversion of the AHB to return
           required: true
           schema:
-            type: string
+            $ref: "#/components/schemas/FormatVersion"
         - name: pruefi
           in: path
           description: Pruefidentifikator of the AHB to return
@@ -79,7 +79,7 @@ paths:
           description: Formatversion of the AHB to return
           required: true
           schema:
-            type: string
+            $ref: "#/components/schemas/FormatVersion"
       responses:
         "200":
           description: successful operation
@@ -156,6 +156,9 @@ components:
       required:
         - lines
         - meta
+    FormatVersion:
+      type: string
+      enum: [FV2310, FV2404, FV2410]
     Version:
       type: object
       properties:
