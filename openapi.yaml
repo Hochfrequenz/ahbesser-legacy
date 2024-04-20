@@ -52,6 +52,43 @@ paths:
       security:
         - ahbesser_auth:
             - read:ahb
+  /format-versions:
+    get:
+      tags:
+        - ahb
+      summary: Get a list of all available format versions
+      operationId: getFormatVersions
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /{format-version}/pruefis:
+    get:
+      tags:
+        - ahb
+      summary: Get a list of all available Pruefidentifikators for a given format version
+      operationId: getPruefis
+      parameters:
+        - name: format-version
+          in: path
+          description: Formatversion of the AHB to return
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
   /version:
     get:
       tags:
