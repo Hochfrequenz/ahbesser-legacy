@@ -42,6 +42,7 @@ paths:
           required: true
           schema:
             type: string
+            example: "25007"
       responses:
         "200":
           description: successful operation
@@ -67,6 +68,7 @@ paths:
                 type: array
                 items:
                   type: string
+                example: [FV2310, FV2404, FV2410]
   /{format-version}/pruefis:
     get:
       tags:
@@ -89,6 +91,7 @@ paths:
                 type: array
                 items:
                   type: string
+                example: ["25007", "25008", "25009"]
   /version:
     get:
       tags:
@@ -114,23 +117,32 @@ components:
             properties:
               ahb_expression:
                 type: string
+                example: "Must"
               data_element:
                 type: string
+                example: "0062"
               guid:
                 type: string
                 format: uuid
+                example: "123e4567-e89b-12d3-a456-426614174000"
               index:
                 type: integer
+                example: 1
               name:
                 type: string
+                example: "Header Name"
               section_name:
                 type: string
+                example: "Header Section"
               segment_code:
                 type: string
+                example: "UNH"
               segment_group_key:
                 type: string
+                example: "001"
               value_pool_entry:
                 type: string
+                example: "Entry1"
             required:
               - ahb_expression
               - guid
@@ -141,13 +153,17 @@ components:
           properties:
             description:
               type: string
+              example: "API response meta description"
             direction:
               type: string
+              example: "inbound"
             maus_version:
               type: string
               pattern: '^\\d+\\.\\d+\\.\\d+$'
+              example: "0.3.1"
             pruefidentifikator:
               type: string
+              example: "25007"
           required:
             - description
             - direction
@@ -164,14 +180,19 @@ components:
       properties:
         version:
           type: string
+          example: "1.0.3"
         buildDate:
           type: string
+          example: "2024-01-15"
         commitHash:
           type: string
+          example: "a1b2c3d4"
         commitDate:
           type: string
+          example: "2024-01-14"
         buildBranch:
           type: string
+          example: "main"
   securitySchemes:
     ahbesser_auth:
       type: oauth2
