@@ -12,8 +12,11 @@
 
 	<footer>
 		<p>
-			made with ♥ by <a href="https://www.hochfrequenz.de/">Hochfrequenz</a> 2023 | powered by
-			<a href="https://github.com/Hochfrequenz/kohlrahbi/">kohlrahbi</a>
+			made with ♥ by
+			<a href="https://www.hochfrequenz.de/">Hochfrequenz</a> 2024 | powered by
+			<a href="https://github.com/Hochfrequenz/kohlrahbi/">kohlrahbi</a> |
+			<a href="https://github.com/Hochfrequenz/ahbesser/">Github</a> |
+			<a href="https://www.hochfrequenz.de/impressum/">Impressum</a>
 		</p>
 	</footer>
 </div>
